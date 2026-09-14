@@ -1,0 +1,86 @@
+{
+  "name": "@20twenty-design/cookie-consent",
+  "version": "1.0.0",
+  "description": "Cookie consent banner + Google Consent Mode v2 for headless (React / Next.js / vanilla) and classic WordPress sites.",
+  "license": "GPL-2.0-or-later",
+  "author": "20Twenty Design",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/20Twenty-Design/wp-cookie-consent-plugin.git"
+  },
+  "homepage": "https://github.com/20Twenty-Design/wp-cookie-consent-plugin#readme",
+  "sideEffects": [
+    "*.css"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./vanilla": {
+      "types": "./dist/vanilla.d.ts",
+      "import": "./dist/vanilla.js"
+    },
+    "./react": {
+      "types": "./dist/react/index.d.ts",
+      "import": "./dist/react/index.js"
+    },
+    "./next": {
+      "types": "./dist/next/index.d.ts",
+      "import": "./dist/next/index.js"
+    },
+    "./next/server": {
+      "types": "./dist/next/server.d.ts",
+      "import": "./dist/next/server.js"
+    },
+    "./styles.css": "./dist/styles.css",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "npm run build:lib && npm run build:wp",
+    "build:lib": "node scripts/build-lib.mjs",
+    "build:wp": "node scripts/build-wp.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "lint:php": "node scripts/lint-php.mjs",
+    "package:plugin": "node scripts/package-plugin.mjs",
+    "prepare": "node scripts/build-lib.mjs",
+    "version": "node scripts/sync-version.mjs && git add plugin"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "peerDependencies": {
+    "next": ">=14",
+    "react": ">=18"
+  },
+  "peerDependenciesMeta": {
+    "next": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "jsdom": "^26",
+    "next": "^16",
+    "react": "^19",
+    "react-dom": "^19",
+    "tsup": "^8.5.0",
+    "typescript": "~5.9",
+    "vitest": "^4"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

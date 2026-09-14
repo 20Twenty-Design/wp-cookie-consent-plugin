@@ -1,0 +1,169 @@
+/* @20twenty-design/cookie-consent — banner styles.
+   Themed entirely through CSS custom properties: override any --cc-* var in
+   your :root (or on a wrapper) to match your design system. The fallbacks
+   below look reasonable with zero configuration. */
+
+.cc-banner {
+  position: fixed;
+  z-index: var(--cc-z, 99999);
+  inset-block-end: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--cc-gap, 16px);
+  box-sizing: border-box;
+  margin-block-end: var(--cc-offset, 16px);
+  padding: var(--cc-padding, 20px 24px);
+  border: 1px solid var(--cc-border, rgba(255, 255, 255, 0.12));
+  border-radius: var(--cc-radius, 14px);
+  background: var(--cc-bg, #111114);
+  color: var(--cc-fg, #ffffff);
+  font-family: var(--cc-font, inherit);
+  font-size: var(--cc-font-size, 14px);
+  line-height: 1.5;
+  text-align: start;
+  box-shadow: var(--cc-shadow, 0 8px 30px rgba(0, 0, 0, 0.35));
+}
+
+.cc-banner *,
+.cc-banner *::before,
+.cc-banner *::after {
+  box-sizing: border-box;
+}
+
+/* Full-width bottom bar */
+.cc-banner--bar {
+  inset-inline: var(--cc-offset, 16px);
+  max-width: var(--cc-max-width, 1232px);
+  margin-inline: auto;
+}
+
+/* Corner card */
+.cc-banner--box-left,
+.cc-banner--box-right {
+  width: calc(100% - 2 * var(--cc-offset, 16px));
+  max-width: var(--cc-box-width, 420px);
+}
+.cc-banner--box-left {
+  inset-inline-start: var(--cc-offset, 16px);
+}
+.cc-banner--box-right {
+  inset-inline-end: var(--cc-offset, 16px);
+}
+.cc-banner--box-left .cc-text,
+.cc-banner--box-right .cc-text {
+  flex-basis: 100%;
+}
+
+.cc-text {
+  flex: 1 1 320px;
+  min-width: 0;
+}
+
+.cc-title {
+  margin: 0 0 4px;
+  font-size: var(--cc-title-size, 15px);
+  font-weight: 600;
+  color: inherit;
+}
+
+.cc-body {
+  margin: 0;
+  color: var(--cc-muted, rgba(255, 255, 255, 0.72));
+}
+
+.cc-policy {
+  color: var(--cc-link, inherit);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.cc-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cc-action-gap, 10px);
+}
+
+.cc-btn {
+  appearance: none;
+  cursor: pointer;
+  margin: 0;
+  border: 1px solid transparent;
+  border-radius: var(--cc-btn-radius, 999px);
+  padding: var(--cc-btn-padding, 10px 22px);
+  font: inherit;
+  font-weight: 600;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  box-shadow: none;
+  transition: opacity 0.15s ease, background 0.15s ease;
+}
+
+.cc-btn:focus-visible {
+  outline: 2px solid var(--cc-accent, #193eff);
+  outline-offset: 2px;
+}
+
+.cc-btn--accept {
+  background: var(--cc-accent, #193eff);
+  color: var(--cc-accent-fg, #ffffff);
+}
+
+.cc-btn--accept:hover {
+  background: var(--cc-accent, #193eff);
+  color: var(--cc-accent-fg, #ffffff);
+  opacity: 0.9;
+}
+
+.cc-btn--reject {
+  background: transparent;
+  color: var(--cc-fg, #ffffff);
+  border-color: var(--cc-border-strong, rgba(255, 255, 255, 0.28));
+}
+
+.cc-btn--reject:hover {
+  background: var(--cc-reject-hover, rgba(255, 255, 255, 0.08));
+  color: var(--cc-fg, #ffffff);
+}
+
+/* "Cookie settings" reopen link/button (shortcode / ManageConsentButton) */
+.cc-manage {
+  appearance: none;
+  cursor: pointer;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+@media (max-width: 640px) {
+  .cc-banner,
+  .cc-banner--bar,
+  .cc-banner--box-left,
+  .cc-banner--box-right {
+    inset-inline: 0;
+    width: 100%;
+    max-width: none;
+    margin-block-end: 0;
+    border-inline: 0;
+    border-block-end: 0;
+    border-radius: var(--cc-radius-mobile, 14px 14px 0 0);
+  }
+  .cc-actions {
+    flex: 1 1 100%;
+  }
+  .cc-btn {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+}
+
+@media print {
+  .cc-banner {
+    display: none;
+  }
+}

@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "7.4"
+          tools: none
+
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      - run: npm run lint:php
+      - run: node scripts/verify-version.mjs
+      - run: npm run package:plugin
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: 20twenty-cookie-consent
+          path: build/20twenty-cookie-consent.zip
