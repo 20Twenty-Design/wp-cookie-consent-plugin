@@ -6,6 +6,8 @@ as its GitHub release notes (shown in the WordPress "View details" modal).
 
 ## [Unreleased]
 
+- npm package is now published to npmjs.com (public, no token needed) with provenance, instead of GitHub Packages.
+
 ## [1.0.0] - 2026-09-14
 
 - WordPress plugin: banner on classic sites, Google Consent Mode v2 default in `<head>`,

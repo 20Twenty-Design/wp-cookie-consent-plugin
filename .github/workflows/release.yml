@@ -2,17 +2,21 @@ name: Release
 
 # Push a tag like v1.2.3 (created by `npm version`) to:
 #   1. build + test,
-#   2. publish a GitHub release with 20twenty-cookie-consent.zip — WordPress
-#      sites pick it up through the plugin's built-in updater,
-#   3. publish @20twenty-design/cookie-consent to GitHub Packages.
+#   2. publish @20twenty-design/cookie-consent to npmjs.com (trusted
+#      publishing: OIDC, no stored npm token, provenance attached),
+#   3. publish a GitHub release with 20twenty-cookie-consent.zip — WordPress
+#      sites pick it up through the plugin's built-in updater.
+#
+# npm runs first so a publishing problem never leaves WordPress sites updated
+# while the npm package is missing.
 
 on:
   push:
     tags: ["v*.*.*"]
 
 permissions:
-  contents: write
-  packages: write
+  contents: write # create the GitHub release
+  id-token: write # npm trusted publishing (OIDC)
 
 jobs:
   release:
@@ -22,15 +26,17 @@ jobs:
 
       - uses: actions/setup-node@v5
         with:
-          node-version: 22
+          node-version: 24
           cache: npm
-          registry-url: https://npm.pkg.github.com
-          scope: "@20twenty-design"
+          registry-url: https://registry.npmjs.org
 
       - uses: shivammathur/setup-php@v2
         with:
           php-version: "7.4"
           tools: none
+
+      # Trusted publishing needs npm >= 11.5.1
+      - run: npm install -g npm@^11.5.1
 
       - name: Versions match tag
         run: node scripts/verify-version.mjs "$GITHUB_REF_NAME"
@@ -41,6 +47,15 @@ jobs:
       - run: npm run build
       - run: npm run lint:php
       - run: npm run package:plugin
+
+      - name: Publish npm package to npmjs.com
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          if [[ "$VERSION" == *-* ]]; then
+            npm publish --tag next
+          else
+            npm publish
+          fi
 
       - name: Create GitHub release
         env:
@@ -56,15 +71,4 @@ jobs:
           else
             gh release create "$GITHUB_REF_NAME" build/20twenty-cookie-consent.zip \
               --title "$GITHUB_REF_NAME" --generate-notes $PRERELEASE
-          fi
-
-      - name: Publish npm package to GitHub Packages
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          VERSION="${GITHUB_REF_NAME#v}"
-          if [[ "$VERSION" == *-* ]]; then
-            npm publish --tag next
-          else
-            npm publish
           fi

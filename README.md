@@ -8,7 +8,7 @@ A cookie consent banner with **Google Consent Mode v2**. It works in two setups:
 | **Headless site** (Next.js, React, Astro, Nuxt, …) | Install the plugin on the CMS and the `@20twenty-design/cookie-consent` npm package on the front end. |
 
 Both setups share one codebase, one stylesheet and one version number. A single git tag releases both:
-the WordPress plugin updates from GitHub releases, and the npm package is published to GitHub Packages.
+the WordPress plugin updates from GitHub releases, and the npm package is published to [npmjs.com](https://www.npmjs.com/package/@20twenty-design/cookie-consent).
 
 ```
 .
@@ -85,30 +85,31 @@ To share the decision between `cms.example.com` and `www.example.com`, set **Coo
 
 ### Install the package
 
-The package is published to GitHub Packages. Add an `.npmrc` to the front-end project:
-
-```ini
-@20twenty-design:registry=https://npm.pkg.github.com
-//npm.pkg.github.com/:_authToken=${GITHUB_PACKAGES_TOKEN}
-```
-
-`GITHUB_PACKAGES_TOKEN` must be a classic PAT with the `read:packages` scope. Set it locally and on Vercel or your CI.
+The package is public on npmjs.com. No token or `.npmrc` is needed.
 
 ```bash
 npm install @20twenty-design/cookie-consent
-npm update @20twenty-design/cookie-consent   # pull new releases (Renovate/Dependabot work too)
+npm update @20twenty-design/cookie-consent   # pull new releases
 ```
 
-<details>
-<summary>Alternative: install straight from git (no registry)</summary>
+#### Automatic update PRs (optional)
 
-```bash
-npm install "github:20Twenty-Design/wp-cookie-consent-plugin#semver:^1.0.0"
+Add `.github/dependabot.yml` to the front-end repo. Dependabot opens a PR when a new version is released;
+merge it and Vercel deploys.
+
+```yaml
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    allow:
+      - dependency-name: "@20twenty-design/cookie-consent"   # only this package
+    cooldown:
+      default-days: 3                                       # skip brand-new versions
+    open-pull-requests-limit: 2
 ```
-
-npm builds the package through its `prepare` script at install time. The machine needs git access to the repository,
-and newer npm versions may ask you to allow the install script (`npm approve-scripts`).
-</details>
 
 ### Next.js (App Router) — drop-in
 
@@ -266,7 +267,11 @@ git push --follow-tags
 ```
 
 The **Release** workflow checks that every version matches the tag, then runs the tests and builds everything. It publishes a GitHub release
-with `20twenty-cookie-consent.zip`, using the CHANGELOG section as release notes, and publishes the npm package to GitHub Packages.
+with `20twenty-cookie-consent.zip`, using the CHANGELOG section as release notes, and publishes the npm package to npmjs.com.
+
+npm publishing uses [trusted publishing](https://docs.npmjs.com/trusted-publishers): GitHub Actions authenticates to npm directly,
+so no npm token is stored anywhere and every version gets a provenance attestation linking it to its git tag.
+Configured on npmjs.com → package → Settings → Trusted publisher (GitHub Actions, `20Twenty-Design/wp-cookie-consent-plugin`, workflow `release.yml`).
 WordPress sites see the update within 12 hours, or right away via **Check for updates**. Front ends pick it up with `npm update`.
 
 Tags with a pre-release suffix (`v1.2.0-beta.1`) become GitHub pre-releases, which WordPress ignores, and are published to npm under the `next` dist-tag.

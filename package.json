@@ -7,8 +7,9 @@
   "type": "module",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/20Twenty-Design/wp-cookie-consent-plugin.git"
+    "url": "git+https://github.com/20Twenty-Design/wp-cookie-consent-plugin.git"
   },
+  "bugs": "https://github.com/20Twenty-Design/wp-cookie-consent-plugin/issues",
   "homepage": "https://github.com/20Twenty-Design/wp-cookie-consent-plugin#readme",
   "sideEffects": [
     "*.css"
@@ -54,7 +55,8 @@
     "version": "node scripts/sync-version.mjs && git add plugin"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "peerDependencies": {
     "next": ">=14",
