@@ -3,7 +3,7 @@
  * Plugin Name:       20Twenty Cookie Consent
  * Plugin URI:        https://github.com/20Twenty-Design/wp-cookie-consent-plugin
  * Description:       Cookie consent banner with Google Consent Mode v2. Renders on classic WordPress sites and exposes its settings to headless front ends via REST and WPGraphQL.
- * Version:           1.1.0
+ * Version:           1.2.0
  * Requires at least: 6.3
  * Requires PHP:      7.4
  * Author:            20Twenty Design
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TWCC_VERSION', '1.1.0' );
+define( 'TWCC_VERSION', '1.2.0' );
 define( 'TWCC_FILE', __FILE__ );
 define( 'TWCC_PATH', plugin_dir_path( __FILE__ ) );
 define( 'TWCC_URL', plugin_dir_url( __FILE__ ) );
