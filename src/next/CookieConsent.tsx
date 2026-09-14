@@ -1,8 +1,8 @@
 import type { ComponentType } from "react";
 // Imported through the package name (kept external at build time) so the
 // "use client" boundary of the React entry survives bundling.
-import { ConsentProvider, CookieBanner } from "@20twenty-design/cookie-consent/react";
-import type { PolicyLinkProps } from "@20twenty-design/cookie-consent/react";
+import { ConsentProvider, CookieBanner } from "@20twenty/cookie-consent/react";
+import type { PolicyLinkProps } from "@20twenty/cookie-consent/react";
 import { fetchConsentSettings } from "../core/fetch";
 import type { ConsentFetchInit } from "../core/fetch";
 import { resolveConsentSettings } from "../core/settings";

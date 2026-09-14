@@ -5,10 +5,10 @@ A cookie consent banner with **Google Consent Mode v2**. It works in two setups:
 | Setup | What you use |
 | --- | --- |
 | **Classic WordPress site** | Install the plugin. The banner renders on its own. |
-| **Headless site** (Next.js, React, Astro, Nuxt, …) | Install the plugin on the CMS and the `@20twenty-design/cookie-consent` npm package on the front end. |
+| **Headless site** (Next.js, React, Astro, Nuxt, …) | Install the plugin on the CMS and the `@20twenty/cookie-consent` npm package on the front end. |
 
 Both setups share one codebase, one stylesheet and one version number. A single git tag releases both:
-the WordPress plugin updates from GitHub releases, and the npm package is published to [npmjs.com](https://www.npmjs.com/package/@20twenty-design/cookie-consent).
+the WordPress plugin updates from GitHub releases, and the npm package is published to [npmjs.com](https://www.npmjs.com/package/@20twenty/cookie-consent).
 
 ```
 .
@@ -88,8 +88,8 @@ To share the decision between `cms.example.com` and `www.example.com`, set **Coo
 The package is public on npmjs.com. No token or `.npmrc` is needed.
 
 ```bash
-npm install @20twenty-design/cookie-consent
-npm update @20twenty-design/cookie-consent   # pull new releases
+npm install @20twenty/cookie-consent
+npm update @20twenty/cookie-consent   # pull new releases
 ```
 
 #### Automatic update PRs (optional)
@@ -105,7 +105,7 @@ updates:
     schedule:
       interval: weekly
     allow:
-      - dependency-name: "@20twenty-design/cookie-consent"   # only this package
+      - dependency-name: "@20twenty/cookie-consent"   # only this package
     cooldown:
       default-days: 3                                       # skip brand-new versions
     open-pull-requests-limit: 2
@@ -115,8 +115,8 @@ updates:
 
 ```tsx
 // app/layout.tsx
-import "@20twenty-design/cookie-consent/styles.css";
-import { CookieConsent } from "@20twenty-design/cookie-consent/next";
+import "@20twenty/cookie-consent/styles.css";
+import { CookieConsent } from "@20twenty/cookie-consent/next";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -151,7 +151,7 @@ Footer "manage" link. It works outside the provider:
 
 ```tsx
 "use client";
-import { ManageConsentButton } from "@20twenty-design/cookie-consent/react";
+import { ManageConsentButton } from "@20twenty/cookie-consent/react";
 
 <ManageConsentButton className="footer-link">Cookie settings</ManageConsentButton>;
 ```
@@ -169,8 +169,8 @@ add_action( 'twcc_settings_updated', function () {
 ### Next.js — build it yourself
 
 ```tsx
-import { ConsentModeScript, fetchConsentSettings, resolveConsentSettings } from "@20twenty-design/cookie-consent/next";
-import { ConsentProvider, CookieBanner } from "@20twenty-design/cookie-consent/react";
+import { ConsentModeScript, fetchConsentSettings, resolveConsentSettings } from "@20twenty/cookie-consent/next";
+import { ConsentProvider, CookieBanner } from "@20twenty/cookie-consent/react";
 
 const raw = await fetchConsentSettings({ wordpressUrl, init: { next: { revalidate: 3600 } } });
 const { config, content, position } = resolveConsentSettings(raw);
@@ -184,14 +184,14 @@ const { config, content, position } = resolveConsentSettings(raw);
 ```
 
 Inside the provider, `useConsent()` returns `{ state, decided, granted, bannerOpen, accept, reject, reopen }`.
-If you'd rather render server-side consent state (which makes the route dynamic), use `readServerConsent(name, version)` from `@20twenty-design/cookie-consent/next/server`.
+If you'd rather render server-side consent state (which makes the route dynamic), use `readServerConsent(name, version)` from `@20twenty/cookie-consent/next/server`.
 
 ### Any other framework (vanilla)
 
 ```ts
-import "@20twenty-design/cookie-consent/styles.css";
-import { consentDefaultInlineScript, fetchConsentSettings, resolveConsentSettings } from "@20twenty-design/cookie-consent";
-import { createCookieConsent } from "@20twenty-design/cookie-consent/vanilla";
+import "@20twenty/cookie-consent/styles.css";
+import { consentDefaultInlineScript, fetchConsentSettings, resolveConsentSettings } from "@20twenty/cookie-consent";
+import { createCookieConsent } from "@20twenty/cookie-consent/vanilla";
 
 // Server: put consentDefaultInlineScript(config) in an inline <script> in <head>, before Google tags.
 // Browser:
@@ -280,5 +280,5 @@ Tags with a pre-release suffix (`v1.2.0-beta.1`) become GitHub pre-releases, whi
 
 - **WordPress:** activate this plugin and delete "Cookie Consent Settings for WPGraphQL". The option name is the same, so saved copy carries over.
   The `cookieConsentSettings` GraphQL query keeps working and gains `cookieName`, `expiryDays`, `cookieDomain` and `position`.
-- **Front end:** swap `@/cookie-consent/client` for `@20twenty-design/cookie-consent/react` and `@/cookie-consent/server` for `@20twenty-design/cookie-consent/next`.
-  `CookieBanner` is now a named export, and CSS is imported once via `@20twenty-design/cookie-consent/styles.css`.
+- **Front end:** swap `@/cookie-consent/client` for `@20twenty/cookie-consent/react` and `@/cookie-consent/server` for `@20twenty/cookie-consent/next`.
+  `CookieBanner` is now a named export, and CSS is imported once via `@20twenty/cookie-consent/styles.css`.

@@ -10,7 +10,7 @@ const shared: Options = {
   target: "es2019",
   clean: false, // scripts/build-lib.mjs wipes dist once before both run
   outDir: "dist",
-  external: ["react", "react-dom", "next", /^next\//, /^@20twenty-design\/cookie-consent/],
+  external: ["react", "react-dom", "next", /^next\//, /^@20twenty\/cookie-consent/],
 };
 
 export default defineConfig([

@@ -1,7 +1,7 @@
 # Changelog
 
 All notable changes. One version covers both the WordPress plugin and the
-`@20twenty-design/cookie-consent` npm package. The section for a version is used
+`@20twenty/cookie-consent` npm package. The section for a version is used
 as its GitHub release notes (shown in the WordPress "View details" modal).
 
 ## [Unreleased]

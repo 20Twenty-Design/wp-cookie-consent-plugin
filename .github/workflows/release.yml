@@ -2,7 +2,7 @@ name: Release
 
 # Push a tag like v1.2.3 (created by `npm version`) to:
 #   1. build + test,
-#   2. publish @20twenty-design/cookie-consent to npmjs.com (trusted
+#   2. publish @20twenty/cookie-consent to npmjs.com (trusted
 #      publishing: OIDC, no stored npm token, provenance attached),
 #   3. publish a GitHub release with 20twenty-cookie-consent.zip — WordPress
 #      sites pick it up through the plugin's built-in updater.

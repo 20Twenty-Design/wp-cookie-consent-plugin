@@ -15,7 +15,7 @@
     "noEmit": true,
     "types": ["node"],
     "paths": {
-      "@20twenty-design/cookie-consent/react": ["./src/react/index.ts"]
+      "@20twenty/cookie-consent/react": ["./src/react/index.ts"]
     }
   },
   "include": ["src", "tests", "tsup.config.ts", "tsup.wp.config.ts", "vitest.config.ts"]
