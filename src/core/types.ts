@@ -57,6 +57,7 @@ export type WpConsentSettings = {
   expiryDays?: number | null;
   cookieDomain?: string | null;
   position?: string | null;
+  googleConsentMode?: boolean | null;
   colorBackground?: string | null;
   colorText?: string | null;
   colorAccent?: string | null;
@@ -77,4 +78,6 @@ export type ResolvedConsent = {
   content: ConsentContent;
   position: BannerPosition;
   theme: ConsentTheme;
+  /** Google Consent Mode v2 on (default script + updates). */
+  googleConsent: boolean;
 };

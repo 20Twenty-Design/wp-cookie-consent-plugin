@@ -91,6 +91,7 @@ final class Settings {
 			'expiryDays'   => (int) $s['expiryDays'],
 			'cookieDomain' => (string) $s['cookieDomain'],
 			'position'     => (string) $s['position'],
+			'googleConsentMode' => (bool) $s['googleConsentMode'],
 			// Appearance — empty string means "use the site's own CSS".
 			'colorBackground' => (string) sanitize_hex_color( $s['colorBackground'] ),
 			'colorText'       => (string) sanitize_hex_color( $s['colorText'] ),

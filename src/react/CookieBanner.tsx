@@ -5,6 +5,7 @@ import { themeToCssVars } from "../core/theme";
 import { isExternalUrl } from "../core/url";
 import type { BannerPosition, ConsentContent, ConsentTheme } from "../core/types";
 import { useConsent } from "./ConsentProvider";
+import { setManageLabel } from "./manageLabel";
 
 /** Props an injected link renderer receives. Lets a host use its own router
  *  link (e.g. next/link) instead of a plain anchor. */
@@ -29,6 +30,11 @@ export type CookieBannerProps = {
 export function CookieBanner({ content, position = "bar", theme, className, LinkComponent }: CookieBannerProps) {
   const { bannerOpen, accept, reject } = useConsent();
   const firstButton = useRef<HTMLButtonElement>(null);
+
+  // Share the CMS "Manage cookies" label with ManageConsentButton (often in a footer).
+  useEffect(() => {
+    setManageLabel(content.manageLabel);
+  }, [content.manageLabel]);
 
   // Move focus into the banner when it is reopened on purpose (not on page load).
   useEffect(() => {

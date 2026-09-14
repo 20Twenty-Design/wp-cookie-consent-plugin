@@ -24,7 +24,7 @@ export type CookieConsentProps = {
   fetchInit?: ConsentFetchInit;
   LinkComponent?: ComponentType<PolicyLinkProps>;
   className?: string;
-  /** Skip Google Consent Mode (default script + updates). */
+  /** Force Google Consent Mode off, whatever the WordPress setting says. */
   disableGoogleConsent?: boolean;
   /** Activate `<script type="text/plain" data-cookie-consent>` tags when allowed. */
   unlockScripts?: boolean;
@@ -59,12 +59,14 @@ export async function CookieConsent({
     });
   }
 
-  const { config, content, position, theme } = resolveConsentSettings(raw, fallbacks);
+  const { config, content, position, theme, googleConsent } = resolveConsentSettings(raw, fallbacks);
+  // Off when WordPress unticks "Google Consent Mode v2" or the project disables it.
+  const google = googleConsent && !disableGoogleConsent;
 
   return (
     <>
-      {!disableGoogleConsent && <ConsentModeScript config={config} nonce={nonce} />}
-      <ConsentProvider config={config} disableGoogleConsent={disableGoogleConsent} unlockScripts={unlockScripts}>
+      {google && <ConsentModeScript config={config} nonce={nonce} />}
+      <ConsentProvider config={config} disableGoogleConsent={!google} unlockScripts={unlockScripts}>
         <CookieBanner
           content={content}
           position={position}

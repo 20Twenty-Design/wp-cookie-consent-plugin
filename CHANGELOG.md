@@ -6,6 +6,12 @@ as its GitHub release notes (shown in the WordPress "View details" modal).
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-09-14
+
+- Google Consent Mode v2 setting now applies to headless front ends (REST/GraphQL `googleConsentMode`);
+  moved to the shared "Behaviour" section in WordPress. `disableGoogleConsent` still forces it off from code.
+- `ManageConsentButton` shows the "Manage cookies" label from WordPress automatically (new `useManageLabel()` hook).
+
 ## [1.1.0] - 2026-09-14
 
 - Appearance settings (position and colours) now apply to headless front ends too: exposed via REST and

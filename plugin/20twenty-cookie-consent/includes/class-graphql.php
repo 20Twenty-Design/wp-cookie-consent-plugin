@@ -44,6 +44,10 @@ final class GraphQL {
 					'cookieName'   => array( 'type' => 'String' ),
 					'expiryDays'   => array( 'type' => 'Int' ),
 					'cookieDomain' => array( 'type' => 'String' ),
+					'googleConsentMode' => array(
+						'type'        => 'Boolean',
+						'description' => 'Send Google Consent Mode v2 default + updates',
+					),
 					'position'     => array(
 						'type'        => 'String',
 						'description' => '"bar", "box-left" or "box-right"',

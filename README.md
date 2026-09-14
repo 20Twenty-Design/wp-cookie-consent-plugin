@@ -137,6 +137,10 @@ renders the Consent Mode default script and mounts the banner. If WordPress can'
 Props: `transport="graphql"`, `endpoint`, `settings` (skips the fetch when you already have the data), `fallbacks`,
 `fetchInit`, `LinkComponent`, `className`, `disableGoogleConsent`, `unlockScripts`, `nonce`.
 
+Every shared WordPress setting is applied: banner text, mode, re-prompt version, cookie name/lifetime/domain,
+position, colours and **Google Consent Mode v2** (unticking it in WordPress removes the default script and updates;
+`disableGoogleConsent` forces it off from code). Only "Show banner" and "Styles" are WordPress-only.
+
 ```tsx
 // Use your own GraphQL client + router links
 const data = await fetchGraphQL(COOKIE_CONSENT_GRAPHQL_QUERY);
@@ -147,13 +151,15 @@ const data = await fetchGraphQL(COOKIE_CONSENT_GRAPHQL_QUERY);
 />
 ```
 
-Footer "manage" link. It works outside the provider:
+Footer "manage" link. It works outside the provider and shows the **"Manage cookies" label from WordPress**
+(falls back to "Cookie settings"; pass children to override):
 
 ```tsx
 "use client";
 import { ManageConsentButton } from "@twenty-twenty/cookie-consent/react";
 
-<ManageConsentButton className="footer-link">Cookie settings</ManageConsentButton>;
+<ManageConsentButton className="footer-link" />;
+// custom markup: const label = useManageLabel();
 ```
 
 Revalidate instantly when an editor saves. In WordPress:

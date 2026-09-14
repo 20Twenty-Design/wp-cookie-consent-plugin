@@ -24,6 +24,8 @@ export type ResolveOverrides = {
   content?: Partial<ConsentContent>;
   position?: BannerPosition;
   theme?: ConsentTheme;
+  /** Used when the CMS doesn't send `googleConsentMode`. Default true. */
+  googleConsent?: boolean;
 };
 
 /**
@@ -74,5 +76,8 @@ export function resolveConsentSettings(
   if (accent) theme.accent = accent;
   if (accentText) theme.accentText = accentText;
 
-  return { config, content, position, theme };
+  const googleConsent =
+    typeof s.googleConsentMode === "boolean" ? s.googleConsentMode : fallbacks.googleConsent ?? true;
+
+  return { config, content, position, theme, googleConsent };
 }

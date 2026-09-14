@@ -4,6 +4,7 @@ export type { ConsentProviderProps, ConsentContextValue } from "./ConsentProvide
 export { CookieBanner } from "./CookieBanner";
 export type { CookieBannerProps, PolicyLinkProps } from "./CookieBanner";
 export { ManageConsentButton, useStoredConsent } from "./ManageConsentButton";
+export { useManageLabel } from "./manageLabel";
 export type { ManageConsentButtonProps } from "./ManageConsentButton";
 
 export {

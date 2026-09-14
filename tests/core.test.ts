@@ -123,6 +123,15 @@ describe("resolveConsentSettings", () => {
   });
 });
 
+describe("googleConsent", () => {
+  it("follows the WordPress setting, defaulting to on", () => {
+    expect(resolveConsentSettings(null).googleConsent).toBe(true);
+    expect(resolveConsentSettings({ googleConsentMode: false }).googleConsent).toBe(false);
+    expect(resolveConsentSettings({ googleConsentMode: true }, { googleConsent: false }).googleConsent).toBe(true);
+    expect(resolveConsentSettings({}, { googleConsent: false }).googleConsent).toBe(false);
+  });
+});
+
 describe("theme", () => {
   it("resolves CMS colours, ignoring invalid values", () => {
     const { theme } = resolveConsentSettings({

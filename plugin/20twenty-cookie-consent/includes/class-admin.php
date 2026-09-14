@@ -194,6 +194,7 @@ final class Admin {
 						</td>
 					</tr>
 					<?php
+					$this->checkbox_row( $s, 'googleConsentMode', __( 'Google Consent Mode v2', '20twenty-cookie-consent' ), __( 'Send the consent default and an update on every choice', '20twenty-cookie-consent' ), __( 'Works with gtag.js, Google Tag Manager and Site Kit, on this site and on headless front ends. Untick if the site uses no Google tags.', '20twenty-cookie-consent' ) );
 					$this->text_row( $s, 'cookieName', __( 'Cookie name', '20twenty-cookie-consent' ) );
 					?>
 					<tr>
@@ -231,7 +232,6 @@ final class Admin {
 				<table class="form-table" role="presentation">
 					<?php
 					$this->checkbox_row( $s, 'renderBanner', __( 'Show banner', '20twenty-cookie-consent' ), __( 'Render the cookie banner on this site\'s front end', '20twenty-cookie-consent' ) );
-					$this->checkbox_row( $s, 'googleConsentMode', __( 'Google Consent Mode v2', '20twenty-cookie-consent' ), __( 'Output the consent default in <head> and send updates on every choice', '20twenty-cookie-consent' ), __( 'Works with gtag.js, Google Tag Manager and Site Kit. The default is printed before any other script.', '20twenty-cookie-consent' ) );
 					$this->checkbox_row( $s, 'loadStyles', __( 'Styles', '20twenty-cookie-consent' ), __( 'Load the built-in banner stylesheet', '20twenty-cookie-consent' ), __( 'Untick to style .cc-banner entirely from your theme.', '20twenty-cookie-consent' ) );
 					?>
 				</table>

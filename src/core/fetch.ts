@@ -21,6 +21,7 @@ export const COOKIE_CONSENT_GRAPHQL_QUERY = /* GraphQL */ `
       expiryDays
       cookieDomain
       position
+      googleConsentMode
       colorBackground
       colorText
       colorAccent

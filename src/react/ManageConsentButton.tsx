@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import type { ButtonHTMLAttributes, ReactNode } from "react";
-import { DEFAULT_CONFIG } from "../core/config";
+import { DEFAULT_CONFIG, DEFAULT_CONTENT } from "../core/config";
 import { readClientConsent } from "../core/cookie";
 import { CONSENT_CHANGE_EVENT, openConsentBanner } from "../core/events";
 import type { ConsentState } from "../core/types";
+import { useManageLabel } from "./manageLabel";
 
 /**
  * Reads the stored decision without needing <ConsentProvider> — for footers and
@@ -43,6 +44,7 @@ export type ManageConsentButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonEleme
   version?: number;
   /** Only render once the visitor has decided (the banner is already visible before). Default true. */
   onlyWhenDecided?: boolean;
+  /** Button content. Defaults to the "Manage cookies" label from WordPress, then "Cookie settings". */
   children?: ReactNode;
 };
 
@@ -56,6 +58,7 @@ export function ManageConsentButton({
   ...rest
 }: ManageConsentButtonProps) {
   const state = useStoredConsent(cookieName, version);
+  const cmsLabel = useManageLabel();
 
   if (onlyWhenDecided && !state?.decision) return null;
 
@@ -66,7 +69,7 @@ export function ManageConsentButton({
       className={`cc-manage${className ? ` ${className}` : ""}`}
       onClick={openConsentBanner}
     >
-      {children ?? "Cookie settings"}
+      {children ?? cmsLabel ?? DEFAULT_CONTENT.manageLabel}
     </button>
   );
 }
