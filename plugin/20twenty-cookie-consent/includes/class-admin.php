@@ -260,7 +260,7 @@ final class Admin {
 						<?php esc_html_e( 'not active (optional).', '20twenty-cookie-consent' ); ?>
 					<?php endif; ?>
 				</p>
-				<p><?php esc_html_e( 'Front-end package:', '20twenty-cookie-consent' ); ?> <code>@20twenty/cookie-consent</code> — <a href="https://github.com/20Twenty-Design/wp-cookie-consent-plugin#readme" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'setup guide', '20twenty-cookie-consent' ); ?></a></p>
+				<p><?php esc_html_e( 'Front-end package:', '20twenty-cookie-consent' ); ?> <code>@twenty-twenty/cookie-consent</code> — <a href="https://github.com/20Twenty-Design/wp-cookie-consent-plugin#readme" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'setup guide', '20twenty-cookie-consent' ); ?></a></p>
 			</div>
 
 			<div class="twcc-card">

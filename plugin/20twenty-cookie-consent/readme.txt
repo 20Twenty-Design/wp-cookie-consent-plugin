@@ -17,7 +17,7 @@ Cookie consent banner with Google Consent Mode v2 for classic and headless WordP
 * Opt-in (EU/UK) or opt-out (US) mode, re-prompt everyone with one checkbox.
 * Blocks any other tracker until consent: `<script type="text/plain" data-cookie-consent>`.
 * WP Consent API support (Site Kit, WooCommerce, …).
-* Headless: settings at `/wp-json/20twenty-cookie-consent/v1/settings` and the WPGraphQL `cookieConsentSettings` field, consumed by the `@20twenty/cookie-consent` npm package.
+* Headless: settings at `/wp-json/20twenty-cookie-consent/v1/settings` and the WPGraphQL `cookieConsentSettings` field, consumed by the `@twenty-twenty/cookie-consent` npm package.
 * Updates straight from GitHub releases.
 
 Reopen the banner with the `[cookie_consent_manage]` shortcode, a menu link to `#cookie-settings`, or any element with `data-cc-open`.
