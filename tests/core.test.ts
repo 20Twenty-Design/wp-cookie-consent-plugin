@@ -9,6 +9,7 @@ import {
   readClientConsent,
   resolveConsentSettings,
   serializeConsent,
+  themeToCssVars,
   updateGoogleConsent,
   CONSENT_CHANGE_EVENT,
 } from "../src";
@@ -119,6 +120,40 @@ describe("resolveConsentSettings", () => {
     const { config } = resolveConsentSettings(null, { config: { mode: "opt-out" } });
     expect(config.mode).toBe("opt-out");
     expect(config).not.toHaveProperty("cookieDomain");
+  });
+});
+
+describe("theme", () => {
+  it("resolves CMS colours, ignoring invalid values", () => {
+    const { theme } = resolveConsentSettings({
+      colorBackground: "#ffffff",
+      colorText: "#111",
+      colorAccent: "red; background: url(x)",
+      colorAccentText: "",
+    });
+    expect(theme).toEqual({ background: "#ffffff", text: "#111" });
+  });
+
+  it("falls back to project theme, CMS wins", () => {
+    const { theme } = resolveConsentSettings(
+      { colorAccent: "#ff0000" },
+      { theme: { accent: "#00ff00", background: "#000000" } }
+    );
+    expect(theme).toEqual({ accent: "#ff0000", background: "#000000" });
+  });
+
+  it("derives secondary tones from the text colour", () => {
+    expect(themeToCssVars({ text: "#222222", accent: "#ff3300" })).toEqual({
+      "--cc-fg": "#222222",
+      "--cc-link": "#222222",
+      "--cc-muted": "color-mix(in srgb, #222222 72%, transparent)",
+      "--cc-border": "color-mix(in srgb, #222222 12%, transparent)",
+      "--cc-border-strong": "color-mix(in srgb, #222222 28%, transparent)",
+      "--cc-reject-hover": "color-mix(in srgb, #222222 8%, transparent)",
+      "--cc-accent": "#ff3300",
+    });
+    expect(themeToCssVars({})).toEqual({});
+    expect(themeToCssVars(undefined)).toEqual({});
   });
 });
 

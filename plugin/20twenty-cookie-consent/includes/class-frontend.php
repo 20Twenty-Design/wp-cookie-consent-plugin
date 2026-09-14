@@ -137,31 +137,14 @@ final class Frontend {
 		$css = 'assets/dist/cookie-consent.css';
 		if ( $s['loadStyles'] && is_readable( TWCC_PATH . $css ) ) {
 			wp_enqueue_style( self::HANDLE, TWCC_URL . $css, array(), TWCC_VERSION );
-			$vars = $this->css_vars( $s );
-			if ( '' !== $vars ) {
-				wp_add_inline_style( self::HANDLE, ':root{' . $vars . '}' );
+			$css = '';
+			foreach ( Settings::css_vars( $s ) as $var => $value ) {
+				$css .= $var . ':' . $value . ';';
+			}
+			if ( '' !== $css ) {
+				wp_add_inline_style( self::HANDLE, ':root{' . $css . '}' );
 			}
 		}
-	}
-
-	private function css_vars( array $s ): string {
-		$map = array(
-			'colorBackground' => '--cc-bg',
-			'colorText'       => '--cc-fg',
-			'colorAccent'     => '--cc-accent',
-			'colorAccentText' => '--cc-accent-fg',
-		);
-		$out = '';
-		foreach ( $map as $key => $var ) {
-			$color = sanitize_hex_color( $s[ $key ] );
-			if ( $color ) {
-				$out .= $var . ':' . $color . ';';
-				if ( 'colorText' === $key ) {
-					$out .= '--cc-link:' . $color . ';';
-				}
-			}
-		}
-		return $out;
 	}
 
 	/**

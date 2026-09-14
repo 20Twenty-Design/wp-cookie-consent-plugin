@@ -1,8 +1,9 @@
 import { useEffect, useRef } from "react";
-import type { ComponentType, ReactNode } from "react";
+import type { ComponentType, CSSProperties, ReactNode } from "react";
 import { CONSENT_OPEN_EVENT } from "../core/events";
+import { themeToCssVars } from "../core/theme";
 import { isExternalUrl } from "../core/url";
-import type { BannerPosition, ConsentContent } from "../core/types";
+import type { BannerPosition, ConsentContent, ConsentTheme } from "../core/types";
 import { useConsent } from "./ConsentProvider";
 
 /** Props an injected link renderer receives. Lets a host use its own router
@@ -16,6 +17,8 @@ export type PolicyLinkProps = {
 export type CookieBannerProps = {
   content: ConsentContent;
   position?: BannerPosition;
+  /** Colours from the CMS. Applied as --cc-* variables on the banner; unset keeps your CSS. */
+  theme?: ConsentTheme;
   /** Extra class on the banner root for project-specific overrides. */
   className?: string;
   /** Optional link component for the policy link. Falls back to <a>. */
@@ -23,7 +26,7 @@ export type CookieBannerProps = {
 };
 
 // Markup mirrors vanilla/buildBanner so `styles.css` fits both.
-export function CookieBanner({ content, position = "bar", className, LinkComponent }: CookieBannerProps) {
+export function CookieBanner({ content, position = "bar", theme, className, LinkComponent }: CookieBannerProps) {
   const { bannerOpen, accept, reject } = useConsent();
   const firstButton = useRef<HTMLButtonElement>(null);
 
@@ -44,6 +47,7 @@ export function CookieBanner({ content, position = "bar", className, LinkCompone
       role="dialog"
       aria-live="polite"
       aria-label={content.title || "Cookie consent"}
+      style={themeToCssVars(theme) as CSSProperties}
     >
       <div className="cc-text">
         {content.title && <p className="cc-title">{content.title}</p>}

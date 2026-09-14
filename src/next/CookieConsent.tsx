@@ -59,13 +59,19 @@ export async function CookieConsent({
     });
   }
 
-  const { config, content, position } = resolveConsentSettings(raw, fallbacks);
+  const { config, content, position, theme } = resolveConsentSettings(raw, fallbacks);
 
   return (
     <>
       {!disableGoogleConsent && <ConsentModeScript config={config} nonce={nonce} />}
       <ConsentProvider config={config} disableGoogleConsent={disableGoogleConsent} unlockScripts={unlockScripts}>
-        <CookieBanner content={content} position={position} className={className} LinkComponent={LinkComponent} />
+        <CookieBanner
+          content={content}
+          position={position}
+          theme={theme}
+          className={className}
+          LinkComponent={LinkComponent}
+        />
       </ConsentProvider>
     </>
   );

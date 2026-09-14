@@ -57,6 +57,18 @@ export type WpConsentSettings = {
   expiryDays?: number | null;
   cookieDomain?: string | null;
   position?: string | null;
+  colorBackground?: string | null;
+  colorText?: string | null;
+  colorAccent?: string | null;
+  colorAccentText?: string | null;
+};
+
+/** Banner colours (hex). Unset = keep the site's own CSS. */
+export type ConsentTheme = {
+  background?: string;
+  text?: string;
+  accent?: string;
+  accentText?: string;
 };
 
 /** Normalised result of `resolveConsentSettings`. */
@@ -64,4 +76,5 @@ export type ResolvedConsent = {
   config: ConsentConfig;
   content: ConsentContent;
   position: BannerPosition;
+  theme: ConsentTheme;
 };

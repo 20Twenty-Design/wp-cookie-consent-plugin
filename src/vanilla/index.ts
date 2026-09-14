@@ -5,6 +5,7 @@ import { commitDecision, isConsentGranted } from "../core/consent";
 import { readClientConsent } from "../core/cookie";
 import { CONSENT_OPEN_EVENT } from "../core/events";
 import { unlockConsentScripts } from "../core/scripts";
+import { themeToCssVars } from "../core/theme";
 import { isExternalUrl } from "../core/url";
 import type {
   BannerPosition,
@@ -12,12 +13,15 @@ import type {
   ConsentContent,
   ConsentDecision,
   ConsentState,
+  ConsentTheme,
 } from "../core/types";
 
 export type CookieConsentOptions = {
   config?: Partial<ConsentConfig>;
   content?: Partial<ConsentContent>;
   position?: BannerPosition;
+  /** Colours applied as --cc-* variables on the banner. Unset keeps your CSS. */
+  theme?: ConsentTheme;
   /** Extra class on the banner root. */
   className?: string;
   /** Element the banner is appended to. Default document.body. */
@@ -72,7 +76,7 @@ export function createCookieConsent(options: CookieConsentOptions = {}): CookieC
 
   function open(opts: { focus?: boolean } = {}) {
     if (!root) {
-      root = buildBanner(content, position, options.className, {
+      root = buildBanner(content, position, options.theme, options.className, {
         accept: () => decide("accepted"),
         reject: () => decide("rejected"),
       });
@@ -120,6 +124,7 @@ export function createCookieConsent(options: CookieConsentOptions = {}): CookieC
 function buildBanner(
   content: ConsentContent,
   position: BannerPosition,
+  theme: ConsentTheme | undefined,
   className: string | undefined,
   actions: { accept: () => void; reject: () => void }
 ): HTMLElement {
@@ -134,6 +139,7 @@ function buildBanner(
   root.setAttribute("role", "dialog");
   root.setAttribute("aria-live", "polite");
   root.setAttribute("aria-label", content.title || "Cookie consent");
+  for (const [name, value] of Object.entries(themeToCssVars(theme))) root.style.setProperty(name, value);
 
   const textWrap = el("div", "cc-text");
   if (content.title) textWrap.appendChild(el("p", "cc-title", content.title));
@@ -165,4 +171,4 @@ function buildBanner(
 
 export { unlockConsentScripts } from "../core/scripts";
 export { openConsentBanner, onConsentChange, CONSENT_OPEN_EVENT, CONSENT_CHANGE_EVENT } from "../core/events";
-export type { BannerPosition, ConsentConfig, ConsentContent, ConsentState } from "../core/types";
+export type { BannerPosition, ConsentConfig, ConsentContent, ConsentState, ConsentTheme } from "../core/types";

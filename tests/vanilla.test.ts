@@ -11,7 +11,7 @@ afterEach(() => {
   document.cookie = "cookie_consent=; Max-Age=0; Path=/";
 });
 
-const banner = () => document.querySelector(".cc-banner");
+const banner = () => document.querySelector<HTMLElement>(".cc-banner");
 
 describe("createCookieConsent", () => {
   it("shows the banner for undecided visitors and stores the choice", () => {
@@ -31,6 +31,12 @@ describe("createCookieConsent", () => {
     expect(banner()).toBeNull();
     expect(document.cookie).toContain("cookie_consent=accepted.1");
     expect(instance.getState().decision).toBe("accepted");
+  });
+
+  it("applies theme colours as CSS variables on the banner", () => {
+    instance = createCookieConsent({ theme: { background: "#ffffff", accent: "bad" }, googleConsent: false });
+    expect(banner()!.style.getPropertyValue("--cc-bg")).toBe("#ffffff");
+    expect(banner()!.style.getPropertyValue("--cc-accent")).toBe("");
   });
 
   it("stays hidden once decided and reopens on demand", () => {

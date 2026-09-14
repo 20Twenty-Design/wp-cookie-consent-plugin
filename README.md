@@ -204,7 +204,14 @@ consent.open(); // accept(), reject(), getState(), isGranted(), destroy()
 
 ## Theming
 
-The banner is styled entirely through CSS custom properties. Override them in `:root` or on a wrapper:
+**From WordPress:** Settings → Cookie Consent → **Appearance** sets the position and colours for the WordPress banner
+*and* for headless front ends (they arrive as `position`, `colorBackground`, `colorText`, `colorAccent`, `colorAccentText`).
+Colours are applied as `--cc-*` variables on the banner itself, so they win over your CSS; leave a colour empty to keep
+your own styling. Muted text, borders and hover tones are derived from the text colour.
+Project-level defaults for empty fields: `resolveConsentSettings(raw, { theme: { accent: "#c8102e" } })` or
+`<CookieConsent fallbacks={{ theme: { … } }} />`.
+
+**From CSS:** the banner is styled entirely through CSS custom properties. Override them in `:root` or on a wrapper:
 
 ```css
 :root {

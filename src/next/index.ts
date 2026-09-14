@@ -13,6 +13,7 @@ export type {
   ConsentDecision,
   ConsentMode,
   ConsentState,
+  ConsentTheme,
   ResolvedConsent,
   WpConsentSettings,
 } from "../core/types";

@@ -1,8 +1,10 @@
 import { DEFAULT_CONFIG, DEFAULT_CONTENT, DEFAULT_POSITION } from "./config";
+import { sanitizeHexColor } from "./theme";
 import type {
   BannerPosition,
   ConsentConfig,
   ConsentContent,
+  ConsentTheme,
   ResolvedConsent,
   WpConsentSettings,
 } from "./types";
@@ -21,6 +23,7 @@ export type ResolveOverrides = {
   config?: Partial<ConsentConfig>;
   content?: Partial<ConsentContent>;
   position?: BannerPosition;
+  theme?: ConsentTheme;
 };
 
 /**
@@ -60,5 +63,16 @@ export function resolveConsentSettings(
     ? (s.position as BannerPosition)
     : fallbacks.position ?? DEFAULT_POSITION;
 
-  return { config, content, position };
+  const t = fallbacks.theme ?? {};
+  const theme: ConsentTheme = {};
+  const background = sanitizeHexColor(s.colorBackground) ?? sanitizeHexColor(t.background);
+  const textColor = sanitizeHexColor(s.colorText) ?? sanitizeHexColor(t.text);
+  const accent = sanitizeHexColor(s.colorAccent) ?? sanitizeHexColor(t.accent);
+  const accentText = sanitizeHexColor(s.colorAccentText) ?? sanitizeHexColor(t.accentText);
+  if (background) theme.background = background;
+  if (textColor) theme.text = textColor;
+  if (accent) theme.accent = accent;
+  if (accentText) theme.accentText = accentText;
+
+  return { config, content, position, theme };
 }

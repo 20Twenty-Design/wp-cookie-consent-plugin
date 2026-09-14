@@ -21,4 +21,5 @@ export type {
   ConsentDecision,
   ConsentMode,
   ConsentState,
+  ConsentTheme,
 } from "../core/types";

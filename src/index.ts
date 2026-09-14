@@ -24,6 +24,7 @@ export { fetchConsentSettings, COOKIE_CONSENT_GRAPHQL_QUERY, REST_SETTINGS_PATH 
 export type { FetchConsentSettingsOptions, ConsentFetchInit } from "./core/fetch";
 export { isExternalUrl } from "./core/url";
 export { unlockConsentScripts } from "./core/scripts";
+export { themeToCssVars, sanitizeHexColor } from "./core/theme";
 export type {
   BannerPosition,
   ConsentConfig,
@@ -31,6 +32,7 @@ export type {
   ConsentDecision,
   ConsentMode,
   ConsentState,
+  ConsentTheme,
   ResolvedConsent,
   WpConsentSettings,
 } from "./core/types";

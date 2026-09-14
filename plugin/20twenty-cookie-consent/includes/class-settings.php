@@ -91,6 +91,11 @@ final class Settings {
 			'expiryDays'   => (int) $s['expiryDays'],
 			'cookieDomain' => (string) $s['cookieDomain'],
 			'position'     => (string) $s['position'],
+			// Appearance — empty string means "use the site's own CSS".
+			'colorBackground' => (string) sanitize_hex_color( $s['colorBackground'] ),
+			'colorText'       => (string) sanitize_hex_color( $s['colorText'] ),
+			'colorAccent'     => (string) sanitize_hex_color( $s['colorAccent'] ),
+			'colorAccentText' => (string) sanitize_hex_color( $s['colorAccentText'] ),
 		);
 
 		/**
@@ -99,6 +104,45 @@ final class Settings {
 		 * @param array $payload Public settings.
 		 */
 		return apply_filters( 'twcc_public_settings', $payload );
+	}
+
+	/**
+	 * Colour settings as banner CSS custom properties. Mirrors
+	 * themeToCssVars() in src/core/theme.ts. Secondary tones (muted body text,
+	 * borders, hover) are derived from the text colour so a light background
+	 * with dark text stays readable.
+	 *
+	 * @return array<string,string> e.g. [ '--cc-bg' => '#ffffff' ]
+	 */
+	public static function css_vars( array $s ): array {
+		$vars = array();
+
+		$bg = sanitize_hex_color( $s['colorBackground'] ?? '' );
+		if ( $bg ) {
+			$vars['--cc-bg'] = $bg;
+		}
+
+		$text = sanitize_hex_color( $s['colorText'] ?? '' );
+		if ( $text ) {
+			$vars['--cc-fg']            = $text;
+			$vars['--cc-link']          = $text;
+			$vars['--cc-muted']         = 'color-mix(in srgb, ' . $text . ' 72%, transparent)';
+			$vars['--cc-border']        = 'color-mix(in srgb, ' . $text . ' 12%, transparent)';
+			$vars['--cc-border-strong'] = 'color-mix(in srgb, ' . $text . ' 28%, transparent)';
+			$vars['--cc-reject-hover']  = 'color-mix(in srgb, ' . $text . ' 8%, transparent)';
+		}
+
+		$accent = sanitize_hex_color( $s['colorAccent'] ?? '' );
+		if ( $accent ) {
+			$vars['--cc-accent'] = $accent;
+		}
+
+		$accent_text = sanitize_hex_color( $s['colorAccentText'] ?? '' );
+		if ( $accent_text ) {
+			$vars['--cc-accent-fg'] = $accent_text;
+		}
+
+		return $vars;
 	}
 
 	/**

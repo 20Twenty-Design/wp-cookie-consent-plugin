@@ -205,14 +205,9 @@ final class Admin {
 					?>
 				</table>
 
-				<h2 class="title"><?php esc_html_e( 'This WordPress site', '20twenty-cookie-consent' ); ?></h2>
-				<p><?php esc_html_e( 'Controls the banner WordPress itself renders. Headless-only installs can switch it off — the settings above are still served to the front end.', '20twenty-cookie-consent' ); ?></p>
+				<h2 class="title"><?php esc_html_e( 'Appearance', '20twenty-cookie-consent' ); ?></h2>
+				<p><?php esc_html_e( 'Applies to this WordPress site and to headless front ends. Leave a colour empty to keep the site\'s own styling.', '20twenty-cookie-consent' ); ?></p>
 				<table class="form-table" role="presentation">
-					<?php
-					$this->checkbox_row( $s, 'renderBanner', __( 'Show banner', '20twenty-cookie-consent' ), __( 'Render the cookie banner on this site\'s front end', '20twenty-cookie-consent' ) );
-					$this->checkbox_row( $s, 'googleConsentMode', __( 'Google Consent Mode v2', '20twenty-cookie-consent' ), __( 'Output the consent default in <head> and send updates on every choice', '20twenty-cookie-consent' ), __( 'Works with gtag.js, Google Tag Manager and Site Kit. The default is printed before any other script.', '20twenty-cookie-consent' ) );
-					$this->checkbox_row( $s, 'loadStyles', __( 'Styles', '20twenty-cookie-consent' ), __( 'Load the built-in banner stylesheet', '20twenty-cookie-consent' ), __( 'Untick to style .cc-banner entirely from your theme.', '20twenty-cookie-consent' ) );
-					?>
 					<tr>
 						<th scope="row"><label for="twcc_position"><?php esc_html_e( 'Position', '20twenty-cookie-consent' ); ?></label></th>
 						<td>
@@ -228,6 +223,16 @@ final class Admin {
 					$this->color_row( $s, 'colorText', __( 'Text', '20twenty-cookie-consent' ), '--cc-fg' );
 					$this->color_row( $s, 'colorAccent', __( 'Accept button', '20twenty-cookie-consent' ), '--cc-accent' );
 					$this->color_row( $s, 'colorAccentText', __( 'Accept button text', '20twenty-cookie-consent' ), '--cc-accent-fg' );
+					?>
+				</table>
+
+				<h2 class="title"><?php esc_html_e( 'WordPress front end only', '20twenty-cookie-consent' ); ?></h2>
+				<p><?php esc_html_e( 'These only affect the banner WordPress itself renders. On a headless install, untick "Show banner" — the front end renders its own banner from the settings above.', '20twenty-cookie-consent' ); ?></p>
+				<table class="form-table" role="presentation">
+					<?php
+					$this->checkbox_row( $s, 'renderBanner', __( 'Show banner', '20twenty-cookie-consent' ), __( 'Render the cookie banner on this site\'s front end', '20twenty-cookie-consent' ) );
+					$this->checkbox_row( $s, 'googleConsentMode', __( 'Google Consent Mode v2', '20twenty-cookie-consent' ), __( 'Output the consent default in <head> and send updates on every choice', '20twenty-cookie-consent' ), __( 'Works with gtag.js, Google Tag Manager and Site Kit. The default is printed before any other script.', '20twenty-cookie-consent' ) );
+					$this->checkbox_row( $s, 'loadStyles', __( 'Styles', '20twenty-cookie-consent' ), __( 'Load the built-in banner stylesheet', '20twenty-cookie-consent' ), __( 'Untick to style .cc-banner entirely from your theme.', '20twenty-cookie-consent' ) );
 					?>
 				</table>
 

@@ -48,6 +48,22 @@ final class GraphQL {
 						'type'        => 'String',
 						'description' => '"bar", "box-left" or "box-right"',
 					),
+					'colorBackground' => array(
+						'type'        => 'String',
+						'description' => 'Hex colour, empty = site default',
+					),
+					'colorText'       => array(
+						'type'        => 'String',
+						'description' => 'Hex colour, empty = site default',
+					),
+					'colorAccent'     => array(
+						'type'        => 'String',
+						'description' => 'Hex colour, empty = site default',
+					),
+					'colorAccentText' => array(
+						'type'        => 'String',
+						'description' => 'Hex colour, empty = site default',
+					),
 				),
 			)
 		);
