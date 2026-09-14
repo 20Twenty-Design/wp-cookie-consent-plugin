@@ -1,6 +1,6 @@
 {
   "name": "@twenty-twenty/cookie-consent",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Cookie consent banner + Google Consent Mode v2 for headless (React / Next.js / vanilla) and classic WordPress sites.",
   "license": "GPL-2.0-or-later",
   "author": "20Twenty Design",
