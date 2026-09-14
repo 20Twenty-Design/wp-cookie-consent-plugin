@@ -264,15 +264,19 @@ npx @wp-playground/cli server --mount="$PWD/plugin/20twenty-cookie-consent:/word
 npm version patch        # or minor / major / 1.4.0
 # 3. Push — the Release workflow does the rest
 git push --follow-tags
+# 4. Approve the staged version on npmjs.com → Staged Packages
 ```
 
 The **Release** workflow checks that every version matches the tag, then runs the tests and builds everything. It publishes a GitHub release
 with `20twenty-cookie-consent.zip`, using the CHANGELOG section as release notes, and publishes the npm package to npmjs.com.
 
-npm publishing uses [trusted publishing](https://docs.npmjs.com/trusted-publishers): GitHub Actions authenticates to npm directly,
-so no npm token is stored anywhere and every version gets a provenance attestation linking it to its git tag.
-Configured on npmjs.com → package → Settings → Trusted publisher (GitHub Actions, `20Twenty-Design/wp-cookie-consent-plugin`, workflow `release.yml`).
-WordPress sites see the update within 12 hours, or right away via **Check for updates**. Front ends pick it up with `npm update`.
+npm publishing uses [trusted publishing](https://docs.npmjs.com/trusted-publishers) with
+[staged publishing](https://docs.npmjs.com/staged-publishing): GitHub Actions authenticates to npm without a stored token and
+**stages** the version. It goes live only after a maintainer approves it on npmjs.com → **Staged Packages** → **Approve** (2FA),
+or with `npm stage approve <stage-id>`. The WordPress zip is released immediately; front ends see the npm version once approved.
+
+npm settings for the package: Trusted publisher = GitHub Actions, `20Twenty-Design/wp-cookie-consent-plugin`, workflow `release.yml`,
+**`npm publish` left unchecked** (stage-only). Publishing access = "Require two-factor authentication and disallow tokens".
 
 Tags with a pre-release suffix (`v1.2.0-beta.1`) become GitHub pre-releases, which WordPress ignores, and are published to npm under the `next` dist-tag.
 

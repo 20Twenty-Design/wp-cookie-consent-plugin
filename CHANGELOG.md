@@ -6,7 +6,7 @@ as its GitHub release notes (shown in the WordPress "View details" modal).
 
 ## [Unreleased]
 
-- npm package is now published to npmjs.com (public, no token needed) with provenance, instead of GitHub Packages.
+- npm package is now published to npmjs.com (public, no token needed) instead of GitHub Packages. Releases are staged and go live after approval on npmjs.com.
 
 ## [1.0.0] - 2026-09-14
 

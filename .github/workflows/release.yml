@@ -2,13 +2,15 @@ name: Release
 
 # Push a tag like v1.2.3 (created by `npm version`) to:
 #   1. build + test,
-#   2. publish @twenty-twenty/cookie-consent to npmjs.com (trusted
-#      publishing: OIDC, no stored npm token, provenance attached),
+#   2. stage @twenty-twenty/cookie-consent on npmjs.com (trusted publishing:
+#      OIDC, no stored npm token). A maintainer approves it on npmjs.com →
+#      Staged Packages (with 2FA) before it goes live,
 #   3. publish a GitHub release with 20twenty-cookie-consent.zip — WordPress
 #      sites pick it up through the plugin's built-in updater.
 #
 # npm runs first so a publishing problem never leaves WordPress sites updated
-# while the npm package is missing.
+# while the npm package is missing. The trusted publisher is stage-only, so a
+# compromised workflow cannot push straight to the registry.
 
 on:
   push:
@@ -35,8 +37,8 @@ jobs:
           php-version: "7.4"
           tools: none
 
-      # Trusted publishing needs npm >= 11.5.1
-      - run: npm install -g npm@^11.5.1
+      # Staged publishing needs npm >= 11.15.0
+      - run: npm install -g npm@^11.15.0
 
       - name: Versions match tag
         run: node scripts/verify-version.mjs "$GITHUB_REF_NAME"
@@ -48,13 +50,13 @@ jobs:
       - run: npm run lint:php
       - run: npm run package:plugin
 
-      - name: Publish npm package to npmjs.com
+      - name: Stage npm package on npmjs.com (approve on npmjs.com)
         run: |
           VERSION="${GITHUB_REF_NAME#v}"
           if [[ "$VERSION" == *-* ]]; then
-            npm publish --tag next
+            npm stage publish --tag next
           else
-            npm publish
+            npm stage publish
           fi
 
       - name: Create GitHub release
