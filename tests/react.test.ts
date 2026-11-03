@@ -77,3 +77,52 @@ describe("React CookieBanner", () => {
     root.unmount();
   });
 });
+
+describe("ConsentProvider unlockScripts", () => {
+  const optOut = { ...DEFAULT_CONFIG, mode: "opt-out" as const };
+  const gated = () => {
+    const s = document.createElement("script");
+    s.type = "text/plain";
+    s.setAttribute("data-cookie-consent", "");
+    s.text = "window.__ccRan = true;";
+    document.head.appendChild(s);
+  };
+  const mount = async () => {
+    const container = document.createElement("div");
+    document.body.appendChild(container);
+    const root = createRoot(container);
+    await act(async () =>
+      root.render(
+        createElement(ConsentProvider, { config: optOut, disableGoogleConsent: true, unlockScripts: true, children: null })
+      )
+    );
+    return root;
+  };
+
+  afterEach(() => {
+    document.head.querySelectorAll("script").forEach((s) => s.remove());
+  });
+
+  it("opt-out: does not unlock scripts for a visitor who already declined", async () => {
+    document.cookie = "cookie_consent=rejected.1; Path=/";
+    gated();
+    const root = await mount();
+    expect(document.head.querySelector("script[data-cc-unlocked]")).toBeNull();
+    root.unmount();
+  });
+
+  it("removes leftover tracking cookies on mount for a visitor who declined", async () => {
+    document.cookie = "cookie_consent=rejected.1; Path=/";
+    document.cookie = "_ga=x; Path=/";
+    const root = await mount();
+    expect(document.cookie).not.toContain("_ga=");
+    root.unmount();
+  });
+
+  it("opt-out: unlocks scripts for an undecided visitor", async () => {
+    gated();
+    const root = await mount();
+    expect(document.head.querySelector("script[data-cc-unlocked]")).not.toBeNull();
+    root.unmount();
+  });
+});

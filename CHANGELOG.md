@@ -6,6 +6,16 @@ as its GitHub release notes (shown in the WordPress "View details" modal).
 
 ## [Unreleased]
 
+## [1.2.1] - 2026-11-03
+
+- Declining now removes analytics/advertising cookies (`_ga`, `_ga_*`, `_gid`, `_gat*`, `_gcl_*`, `_fbp`, `_fbc`, `_hj*`)
+  on the current host and its parent domains. The cleanup also runs on every page load for visitors who declined,
+  catching leftovers and cookies re-set by tags that ignore consent. HttpOnly cookies (e.g. server-side GTM `FPID`)
+  can't be removed from the browser. New exports: `clearTrackingCookies(patterns?)`, `DEFAULT_TRACKING_COOKIES`.
+- Fix (React/Next.js): in opt-out mode, `unlockScripts` activated gated scripts (e.g. Hotjar) on every page load
+  even for visitors who had declined, because consent counted as granted before the cookie was read on mount.
+  `granted` is now false until the cookie has been read (or `initialState` is passed).
+
 ## [1.2.0] - 2026-09-14
 
 - Google Consent Mode v2 setting now applies to headless front ends (REST/GraphQL `googleConsentMode`);

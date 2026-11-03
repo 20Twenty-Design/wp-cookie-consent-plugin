@@ -5,6 +5,7 @@ import { commitDecision, isConsentGranted } from "../core/consent";
 import { readClientConsent } from "../core/cookie";
 import { CONSENT_OPEN_EVENT } from "../core/events";
 import { unlockConsentScripts } from "../core/scripts";
+import { clearTrackingCookies } from "../core/tracking-cookies";
 import { themeToCssVars } from "../core/theme";
 import { isExternalUrl } from "../core/url";
 import type {
@@ -61,6 +62,8 @@ export function createCookieConsent(options: CookieConsentOptions = {}): CookieC
   const openSelector = options.openSelector === undefined ? DEFAULT_OPEN_SELECTOR : options.openSelector;
 
   let state = readClientConsent(config.cookieName, config.version);
+  // Leftovers from before the decision, or from tags that ignore consent.
+  if (state.decision === "rejected") clearTrackingCookies();
   let root: HTMLElement | null = null;
 
   const unlock = () => {

@@ -4,6 +4,7 @@ import { commitDecision, isConsentGranted } from "../core/consent";
 import { readClientConsent } from "../core/cookie";
 import { CONSENT_OPEN_EVENT } from "../core/events";
 import { unlockConsentScripts } from "../core/scripts";
+import { clearTrackingCookies } from "../core/tracking-cookies";
 import type { ConsentConfig, ConsentDecision, ConsentState } from "../core/types";
 
 export type ConsentContextValue = {
@@ -52,12 +53,18 @@ export function ConsentProvider({
   // Never render the banner during SSR — the real decision is read from the
   // cookie on mount, so decided visitors never see a flash.
   const [bannerOpen, setBannerOpen] = useState(false);
+  // Until the live cookie has been read, an undecided state may really be a
+  // stored "rejected" — so in opt-out mode nothing counts as granted yet.
+  const [synced, setSynced] = useState(initialState !== undefined);
 
   // Re-sync from the live cookie on mount (covers a version bump or a decision
   // made in another tab) and listen for "reopen" requests from elsewhere.
   useEffect(() => {
     const fresh = readClientConsent(config.cookieName, config.version);
     setState(fresh);
+    setSynced(true);
+    // Leftovers from before the decision, or from tags that ignore consent.
+    if (fresh.decision === "rejected") clearTrackingCookies();
     setBannerOpen(fresh.decision === null);
 
     const onOpen = () => setBannerOpen(true);
@@ -65,7 +72,7 @@ export function ConsentProvider({
     return () => window.removeEventListener(CONSENT_OPEN_EVENT, onOpen);
   }, [config.cookieName, config.version]);
 
-  const granted = isConsentGranted(state, config.mode);
+  const granted = synced && isConsentGranted(state, config.mode);
 
   useEffect(() => {
     if (unlockScripts && granted) unlockConsentScripts();

@@ -12,6 +12,7 @@ import {
   themeToCssVars,
   updateGoogleConsent,
   CONSENT_CHANGE_EVENT,
+  clearTrackingCookies,
 } from "../src";
 
 type DL = { dataLayer?: unknown[]; gtag?: unknown };
@@ -189,5 +190,34 @@ describe("fetchConsentSettings", () => {
       fetchConsentSettings({ wordpressUrl: "https://cms.test", transport: "graphql", fetch: gql })
     ).resolves.toEqual({ version: 4 });
     expect(gql).toHaveBeenCalledWith("https://cms.test/graphql", expect.objectContaining({ method: "POST" }));
+  });
+});
+
+describe("tracking cookie cleanup", () => {
+  const set = (...names: string[]) => names.forEach((n) => (document.cookie = `${n}=x; Path=/`));
+
+  it("removes known tracking cookies and keeps the rest", () => {
+    set("_ga", "_ga_W1TDLX4V76", "_gid", "_gcl_au", "_fbp", "_hjSession_1", "session", "_gallery");
+    const removed = clearTrackingCookies();
+    expect(removed.sort()).toEqual(["_fbp", "_ga", "_ga_W1TDLX4V76", "_gcl_au", "_gid", "_hjSession_1"]);
+    expect(document.cookie).toContain("session=x");
+    expect(document.cookie).toContain("_gallery=x");
+    expect(document.cookie).not.toContain("_ga=");
+    expect(document.cookie).not.toContain("_fbp=");
+  });
+
+  it("accepts custom patterns", () => {
+    set("_clck", "_ga");
+    expect(clearTrackingCookies(["_cl*"])).toEqual(["_clck"]);
+    expect(document.cookie).toContain("_ga=x");
+  });
+
+  it("runs on reject, not on accept", () => {
+    set("_ga");
+    commitDecision(DEFAULT_CONFIG, "accepted", { googleConsent: false });
+    expect(document.cookie).toContain("_ga=x");
+    commitDecision(DEFAULT_CONFIG, "rejected", { googleConsent: false });
+    expect(document.cookie).not.toContain("_ga=");
+    expect(document.cookie).toContain("cookie_consent=rejected.1");
   });
 });
